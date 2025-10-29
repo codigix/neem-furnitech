@@ -1,0 +1,36 @@
+/* Global application styles */
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Smooth scrolling across the application */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animation utilities */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Focus visible styles for accessibility */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background-color: hsl(var(--primary-gold));
+  color: hsl(var(--primary-gold-foreground));
+}
+
+::-moz-selection {
+  background-color: hsl(var(--primary-gold));
+  color: hsl(var(--primary-gold-foreground));
+}
