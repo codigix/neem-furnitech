@@ -12,18 +12,14 @@ interface GalleryImage {
   category: string | null;
 }
 
-const GALLERY_CATEGORIES = [
-  { value: "all", label: "All" },
-  { value: "weddings", label: "Weddings" },
-  { value: "birthdays", label: "Birthdays" },
-  { value: "anniversaries", label: "Anniversaries" },
-  { value: "corporate_events", label: "Corporate Events" },
-  { value: "religious_ceremonies", label: "Religious Ceremonies" },
-  { value: "other", label: "Other" },
-];
+interface GalleryCategory {
+  id: string;
+  name: string;
+}
 
 const Gallery = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
+  const [categories, setCategories] = useState<GalleryCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const { toast } = useToast();
@@ -34,13 +30,22 @@ const Gallery = () => {
 
   const fetchData = async () => {
     try {
-      const { data, error } = await supabase
-        .from('gallery')
-        .select('id, title, image_url, category')
-        .order('created_at', { ascending: false });
+      const [galleryResult, categoriesResult] = await Promise.all([
+        supabase
+          .from('gallery')
+          .select('id, title, image_url, category')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('gallery_categories')
+          .select('id, name')
+          .order('created_at', { ascending: true })
+      ]);
 
-      if (error) throw error;
-      setImages(data || []);
+      if (galleryResult.error) throw galleryResult.error;
+      if (categoriesResult.error) throw categoriesResult.error;
+
+      setImages(galleryResult.data || []);
+      setCategories(categoriesResult.data || []);
     } catch (error) {
       console.error('Error fetching gallery data:', error);
       toast({
@@ -79,9 +84,10 @@ const Gallery = () => {
 
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
           <TabsList className="w-full justify-start mb-8 flex-wrap h-auto">
-            {GALLERY_CATEGORIES.map((category) => (
-              <TabsTrigger key={category.value} value={category.value}>
-                {category.label}
+            <TabsTrigger value="all">All</TabsTrigger>
+            {categories.map((category) => (
+              <TabsTrigger key={category.id} value={category.name}>
+                {category.name}
               </TabsTrigger>
             ))}
           </TabsList>

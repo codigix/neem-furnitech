@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface GalleryItem {
   id: string;
@@ -17,14 +19,11 @@ export interface GalleryItem {
   is_featured: boolean;
 }
 
-const GALLERY_CATEGORIES = [
-  "Weddings",
-  "Birthdays",
-  "Anniversaries",
-  "Corporate Events",
-  "Religious Ceremonies",
-  "Other"
-];
+export interface GalleryCategory {
+  id: string;
+  name: string;
+  created_at: string;
+}
 
 type UploadMethod = "url" | "file";
 
@@ -65,7 +64,84 @@ export function GalleryManager({
   editGallery,
   deleteGallery,
 }: GalleryManagerProps) {
+  const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [categories, setCategories] = useState<GalleryCategory[]>([]);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+
+  React.useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    const { data, error } = await supabase
+      .from("gallery_categories")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching categories:", error);
+      return;
+    }
+
+    setCategories(data || []);
+  };
+
+  const handleAddCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCategoryName.trim()) return;
+
+    const { error } = await supabase
+      .from("gallery_categories")
+      .insert({ name: newCategoryName.trim() });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Success",
+      description: "Category added successfully",
+    });
+
+    setNewCategoryName("");
+    setShowAddCategory(false);
+    fetchCategories();
+  };
+
+  const handleDeleteCategory = async (id: string, name: string) => {
+    if (!confirm(`Delete category "${name}"? Images in this category will not be deleted.`)) return;
+
+    const { error } = await supabase
+      .from("gallery_categories")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Success",
+      description: "Category deleted successfully",
+    });
+
+    fetchCategories();
+    if (selectedCategory === name) {
+      setSelectedCategory("all");
+    }
+  };
 
   const filteredImages = selectedCategory === "all" 
     ? galleryImages 
@@ -75,11 +151,48 @@ export function GalleryManager({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-primary">Gallery Management</h1>
-        <Button onClick={() => setShowAddGallery(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Add Image
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setShowAddCategory(true)} variant="outline" className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Add Category
+          </Button>
+          <Button onClick={() => setShowAddGallery(true)} className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Add Image
+          </Button>
+        </div>
       </div>
+
+      {showAddCategory && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Add New Category</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleAddCategory} className="space-y-4">
+              <div>
+                <Label htmlFor="category-name">Category Name</Label>
+                <Input
+                  id="category-name"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="e.g., Weddings, Birthdays"
+                  required
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button type="submit">Add Category</Button>
+                <Button type="button" variant="outline" onClick={() => {
+                  setShowAddCategory(false);
+                  setNewCategoryName("");
+                }}>
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      )}
 
       {showAddGallery && (
         <Card>
@@ -134,9 +247,9 @@ export function GalleryManager({
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {GALLERY_CATEGORIES.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat}
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.name}>
+                        {cat.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -213,12 +326,25 @@ export function GalleryManager({
       <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
         <TabsList className="w-full justify-start overflow-x-auto">
           <TabsTrigger value="all">All ({galleryImages.length})</TabsTrigger>
-          {GALLERY_CATEGORIES.map((cat) => {
-            const count = galleryImages.filter(img => img.category === cat).length;
+          {categories.map((cat) => {
+            const count = galleryImages.filter(img => img.category === cat.name).length;
             return (
-              <TabsTrigger key={cat} value={cat}>
-                {cat} ({count})
-              </TabsTrigger>
+              <div key={cat.id} className="relative inline-flex items-center">
+                <TabsTrigger value={cat.name}>
+                  {cat.name} ({count})
+                </TabsTrigger>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-6 w-6 p-0 ml-1 hover:bg-destructive/10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteCategory(cat.id, cat.name);
+                  }}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
             );
           })}
         </TabsList>
