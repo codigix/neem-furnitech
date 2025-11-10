@@ -17,7 +17,7 @@ interface FavoriteItem {
     base_price: number;
     image_url: string;
     description: string;
-    stock: number;
+    is_active: boolean;
   };
 }
 
@@ -54,7 +54,7 @@ const Favorites = () => {
             base_price,
             image_url,
             description,
-            stock
+            is_active
           )
         `)
         .eq('user_id', userId);
@@ -71,7 +71,7 @@ const Favorites = () => {
           base_price: (item.products as any).base_price,
           image_url: (item.products as any).image_url,
           description: (item.products as any).description,
-          stock: (item.products as any).stock
+          is_active: (item.products as any).is_active
         }
       }));
       
@@ -233,11 +233,11 @@ const Favorites = () => {
                       </span>
                       <Button
                         onClick={() => addToCart(item.products.id)}
-                        disabled={item.products.stock === 0}
+                        disabled={!item.products.is_active}
                         className="flex items-center gap-2"
                       >
                         <ShoppingCart className="h-4 w-4" />
-                        {item.products.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                        {!item.products.is_active ? 'Unavailable' : 'Add to Cart'}
                       </Button>
                     </div>
                   </div>

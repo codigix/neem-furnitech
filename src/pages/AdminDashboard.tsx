@@ -197,6 +197,7 @@ const AdminDashboard = () => {
       fetchUsers(),
       fetchCategories(),
       fetchProducts(),
+      fetchOrders(),
       fetchGallery(),
       fetchContacts(),
     ]);
@@ -217,8 +218,38 @@ const AdminDashboard = () => {
   };
 
   const fetchOrders = async () => {
-    // TODO: Implement when orders table is created
-    setOrders([]);
+    try {
+      const { data: ordersData, error: ordersError } = await supabase
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (ordersError) throw ordersError;
+
+      // Fetch user profiles for each order
+      const userIds = [...new Set(ordersData?.map(o => o.user_id) || [])];
+      const { data: profilesData, error: profilesError } = await supabase
+        .from("profiles")
+        .select("id, email, full_name")
+        .in("id", userIds);
+
+      if (profilesError) throw profilesError;
+
+      // Combine orders with profiles
+      const ordersWithProfiles = ordersData?.map(order => ({
+        ...order,
+        profiles: profilesData?.find(p => p.id === order.user_id) || { email: "", full_name: "" }
+      })) || [];
+
+      setOrders(ordersWithProfiles);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load orders",
+        variant: "destructive",
+      });
+    }
   };
 
   const fetchUsers = async () => {

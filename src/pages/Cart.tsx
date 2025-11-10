@@ -19,7 +19,6 @@ interface CartItem {
     name: string;
     base_price: number;
     image_url: string;
-    stock: number;
   };
 }
 
@@ -54,8 +53,7 @@ const Cart = () => {
             id,
             name,
             base_price,
-            image_url,
-            stock
+            image_url
           )
         `)
         .eq('user_id', userId);
@@ -72,8 +70,7 @@ const Cart = () => {
           id: (item.products as any).id,
           name: (item.products as any).name,
           base_price: (item.products as any).base_price,
-          image_url: (item.products as any).image_url,
-          stock: (item.products as any).stock
+          image_url: (item.products as any).image_url
         }
       }));
       
@@ -229,7 +226,6 @@ const Cart = () => {
                             variant="outline"
                             size="icon"
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            disabled={item.quantity >= item.products.stock}
                           >
                             <Plus className="h-4 w-4" />
                           </Button>

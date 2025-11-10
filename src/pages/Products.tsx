@@ -140,14 +140,23 @@ const Products = () => {
     if (selectedCategory !== "all") {
       const category = categories.find(cat => cat.name === selectedCategory);
       if (category) {
-        filtered = filtered.filter(product => product.category_id === category.id);
-      }
-    }
-
-    if (selectedSubcategory !== "all") {
-      const subcategory = categories.find(cat => cat.name === selectedSubcategory);
-      if (subcategory) {
-        filtered = filtered.filter(product => product.category_id === subcategory.id);
+        if (selectedSubcategory === "all") {
+          // Show all products from this parent category and its subcategories
+          const subcategoryIds = categories
+            .filter(cat => cat.parent_id === category.id)
+            .map(cat => cat.id);
+          
+          filtered = filtered.filter(product => 
+            product.category_id === category.id || 
+            subcategoryIds.includes(product.category_id || '')
+          );
+        } else {
+          // Show only products from the selected subcategory
+          const subcategory = categories.find(cat => cat.name === selectedSubcategory);
+          if (subcategory) {
+            filtered = filtered.filter(product => product.category_id === subcategory.id);
+          }
+        }
       }
     }
 

@@ -23,7 +23,6 @@ interface Product {
   image_url: string;
   images?: string[];
   category_id: string | null;
-  stock: number;
   is_featured: boolean;
   colors?: string[];
   color_variants?: ColorVariant[];
@@ -81,7 +80,6 @@ const ProductDetails = () => {
         image_url: data.image_url,
         images: (data as any).images || [],
         category_id: (data as any).category_id,
-        stock: 0,
         is_featured: data.is_featured,
         colors: (data as any).colors || [],
         color_variants: (data as any).color_variants || []
@@ -237,9 +235,7 @@ const ProductDetails = () => {
   };
 
   const incrementQuantity = () => {
-    if (product && quantity < product.stock) {
-      setQuantity(quantity + 1);
-    }
+    setQuantity(quantity + 1);
   };
 
   const decrementQuantity = () => {
@@ -362,13 +358,6 @@ const ProductDetails = () => {
                     Featured
                   </Badge>
                 )}
-                
-                {/* Stock Badge */}
-                {product.stock === 0 && (
-                  <Badge variant="destructive" className="absolute bottom-4 left-4 z-10">
-                    Out of Stock
-                  </Badge>
-                )}
               </div>
             </Card>
           </div>
@@ -395,13 +384,6 @@ const ProductDetails = () => {
               </p>
             </div>
 
-            <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">Stock Available</h3>
-              <p className="text-muted-foreground">
-                {product.stock > 0 ? `${product.stock} items available` : 'Out of stock'}
-              </p>
-            </div>
-
             {/* Color Selector */}
             {product.color_variants && product.color_variants.length > 0 && (
               <div>
@@ -425,40 +407,37 @@ const ProductDetails = () => {
             )}
 
             {/* Quantity Selector */}
-            {product.stock > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-3">Quantity</h3>
-                <div className="flex items-center space-x-3">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={decrementQuantity}
-                    disabled={quantity <= 1}
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  
-                  <span className="text-xl font-semibold min-w-[3rem] text-center">
-                    {quantity}
-                  </span>
-                  
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={incrementQuantity}
-                    disabled={quantity >= product.stock}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3">Quantity</h3>
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={decrementQuantity}
+                  disabled={quantity <= 1}
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+                
+                <span className="text-xl font-semibold min-w-[3rem] text-center">
+                  {quantity}
+                </span>
+                
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={incrementQuantity}
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
               </div>
-            )}
+            </div>
 
             {/* Action Buttons */}
             <div className="flex space-x-4">
               <Button
                 onClick={handleAddToCart}
-                disabled={isAddingToCart || product.stock === 0}
+                disabled={isAddingToCart}
                 className="flex-1"
                 size="lg"
               >
