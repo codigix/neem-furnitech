@@ -101,10 +101,8 @@ const Header = () => {
       <div className="container mx-auto flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-          <img src="/logo.png" alt="Neem Furnitech" className="h-8 w-auto" />
-          <span className="text-lg font-bold text-foreground hidden sm:inline">
-            Neem
-          </span>
+          <img src="src/neemfurnitech.png" alt="Neem Furnitech" className="w-[125px] h-auto" />
+          
         </Link>
 
         {/* Desktop Navigation */}

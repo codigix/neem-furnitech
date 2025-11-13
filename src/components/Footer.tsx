@@ -11,10 +11,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="Neem Furnitech" className="h-8 w-auto" />
-              <span className="text-lg font-bold">Neem</span>
-            </div>
+            <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+          <img src="src/neemfurnitech.png" alt="Neem Furnitech" className="w-[125px] h-auto" />
+          
+        </Link>        
             <p className="text-sm text-muted-foreground leading-relaxed">
               Premium furniture crafted with attention to detail, designed to elevate your living spaces.
             </p>
