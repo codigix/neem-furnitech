@@ -58,6 +58,18 @@ interface ProductsManagerProps {
     is_featured: boolean;
     colors: string;
     color_variants: ColorVariant[];
+    specifications: {
+      chair_type: string;
+      arm_type: string;
+      brand: string;
+      height_adjustable: string;
+      back_type: string;
+      warranty: string;
+      seat_material: string;
+      upholstery_material: string;
+      model: string;
+    };
+    features: string[];
   };
   setProductForm: React.Dispatch<React.SetStateAction<ProductsManagerProps["productForm"]>>;
   productUploadMethod: UploadMethod;
@@ -223,6 +235,182 @@ export function ProductsManager({
               </div>
 
               <div>
+                <Label>Product Specifications</Label>
+                <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
+                  <div>
+                    <Label htmlFor="chair_type">Chair Type</Label>
+                    <Input
+                      id="chair_type"
+                      value={productForm.specifications.chair_type}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, chair_type: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Executive Chair"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="arm_type">Arm Type</Label>
+                    <Input
+                      id="arm_type"
+                      value={productForm.specifications.arm_type}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, arm_type: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Fixed Arm"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="brand">Brand</Label>
+                    <Input
+                      id="brand"
+                      value={productForm.specifications.brand}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, brand: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., SATHYA"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="height_adjustable">Height Adjustable</Label>
+                    <Input
+                      id="height_adjustable"
+                      value={productForm.specifications.height_adjustable}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, height_adjustable: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Yes"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="back_type">Back Type</Label>
+                    <Input
+                      id="back_type"
+                      value={productForm.specifications.back_type}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, back_type: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., High Back"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="warranty">Warranty</Label>
+                    <Input
+                      id="warranty"
+                      value={productForm.specifications.warranty}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, warranty: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., 1 Year"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="seat_material">Seat Material</Label>
+                    <Input
+                      id="seat_material"
+                      value={productForm.specifications.seat_material}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, seat_material: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Microfiber"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="upholstery_material">Upholstery Material</Label>
+                    <Input
+                      id="upholstery_material"
+                      value={productForm.specifications.upholstery_material}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, upholstery_material: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Fabric"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Label htmlFor="model">Model</Label>
+                    <Input
+                      id="model"
+                      value={productForm.specifications.model}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, model: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Godrez HB Director Executive Chair"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <Label>Product Features</Label>
+                <div className="space-y-2 p-4 border rounded-lg">
+                  {productForm.features.map((feature, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input
+                        value={feature}
+                        onChange={(e) => {
+                          const newFeatures = [...productForm.features];
+                          newFeatures[index] = e.target.value;
+                          setProductForm((prev) => ({ ...prev, features: newFeatures }));
+                        }}
+                        placeholder="Enter feature description"
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          const newFeatures = productForm.features.filter((_, i) => i !== index);
+                          setProductForm((prev) => ({ ...prev, features: newFeatures }));
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setProductForm((prev) => ({
+                        ...prev,
+                        features: [...prev.features, ""]
+                      }));
+                    }}
+                  >
+                    <Plus className="h-4 w-4 mr-2" /> Add Feature
+                  </Button>
+                </div>
+              </div>
+
+              <div>
                 <Label>Color Variants</Label>
                 <div className="space-y-3 p-4 border rounded-lg">
                   {productForm.color_variants.map((variant, index) => (
@@ -359,7 +547,6 @@ export function ProductsManager({
                   Add color variants with images. You can use URLs or upload files from your local folder.
                 </p>
               </div>
-
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={productUploadingFile}>

@@ -6,15 +6,14 @@ const Footer = () => {
 
   return (
     <footer className="bg-card border-t border-border">
-      <div className="container mx-auto py-16">
+      <div className="container mx-auto py-10">
         {/* Main Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-          <img src="src/neemfurnitech.png" alt="Neem Furnitech" className="w-[125px] h-auto" />
-          
-        </Link>        
+              <img src="/neemfurnitech.png" alt="Neem Furnitech" className="w-[100px] h-auto" />
+            </Link> 
             <p className="text-sm text-muted-foreground leading-relaxed">
               Premium furniture crafted with attention to detail, designed to elevate your living spaces.
             </p>
@@ -22,7 +21,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wide">Quick Links</h3>
+            <h3 className="font-semibold text-foreground mb-3 text-sm uppercase tracking-wide">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <Link 
@@ -59,49 +58,12 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Support */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wide">Support</h3>
-            <ul className="space-y-2">
-              <li>
-                <a 
-                  href="#" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Shipping
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Returns
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
+          
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wide">Get in Touch</h3>
-            <div className="space-y-3">
+            <h3 className="font-semibold text-foreground mb-3 text-sm uppercase tracking-wide">Get in Touch</h3>
+            <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-primary-gold flex-shrink-0" />
                 <a href="mailto:hello@neemfurnitech.com" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -126,7 +88,7 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border mb-8"></div>
+        <div className="border-t border-border mb-6"></div>
 
         {/* Bottom */}
         <div className="text-center">

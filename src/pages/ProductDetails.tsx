@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from "@/components/ui/carousel";
 import { Heart, ShoppingCart, Star, ArrowLeft, Plus, Minus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +26,19 @@ interface Product {
   is_featured: boolean;
   colors?: string[];
   color_variants?: ColorVariant[];
+  specifications?: {
+    chair_type?: string;
+    arm_type?: string;
+    brand?: string;
+    height_adjustable?: string;
+    back_type?: string;
+    warranty?: string;
+    seat_material?: string;
+    upholstery_material?: string;
+    model?: string;
+    [key: string]: any;
+  };
+  features?: string[];
 }
 
 const ProductDetails = () => {
@@ -41,6 +54,8 @@ const ProductDetails = () => {
   const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   useEffect(() => {
     const getUser = async () => {
@@ -58,6 +73,14 @@ const ProductDetails = () => {
       fetchProduct();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (!carouselApi) return;
+    
+    carouselApi.on("select", () => {
+      setSelectedImageIndex(carouselApi.selectedScrollSnap());
+    });
+  }, [carouselApi]);
 
   const fetchProduct = async () => {
     try {
@@ -82,7 +105,9 @@ const ProductDetails = () => {
         category_id: (data as any).category_id,
         is_featured: data.is_featured,
         colors: (data as any).colors || [],
-        color_variants: (data as any).color_variants || []
+        color_variants: (data as any).color_variants || [],
+        specifications: (data as any).specifications || {},
+        features: (data as any).features || []
       };
 
       setProduct(productData);
@@ -293,96 +318,143 @@ const ProductDetails = () => {
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Product Images Carousel */}
-          <div className="relative">
-            <Card className="overflow-hidden">
-              <div className="aspect-square relative">
-                {(() => {
-                  // Get images for selected color variant
-                  let displayImages: string[] = [];
-                  
-                  if (product.color_variants && product.color_variants.length > 0) {
-                    const selectedVariant = product.color_variants.find(v => v.color === selectedColor);
-                    if (selectedVariant && selectedVariant.images.length > 0) {
-                      displayImages = selectedVariant.images.filter(img => img);
-                    }
-                  }
-                  
-                  // Fallback to general images if no color variant images
-                  if (displayImages.length === 0) {
-                    displayImages = [
-                      ...(product.images && product.images.length > 0 ? product.images : []),
-                      ...(product.image_url ? [product.image_url] : [])
-                    ].filter((img, index, arr) => img && arr.indexOf(img) === index);
-                  }
+          {/* Product Images with Thumbnails */}
+          <div className="space-y-4">
+            {(() => {
+              // Get images for selected color variant
+              let displayImages: string[] = [];
+              
+              if (product.color_variants && product.color_variants.length > 0) {
+                const selectedVariant = product.color_variants.find(v => v.color === selectedColor);
+                if (selectedVariant && selectedVariant.images.length > 0) {
+                  displayImages = selectedVariant.images.filter(img => img);
+                }
+              }
+              
+              // Fallback to general images if no color variant images
+              if (displayImages.length === 0) {
+                displayImages = [
+                  ...(product.images && product.images.length > 0 ? product.images : []),
+                  ...(product.image_url ? [product.image_url] : [])
+                ].filter((img, index, arr) => img && arr.indexOf(img) === index);
+              }
 
-                  return displayImages.length > 1 ? (
-                    <Carousel className="w-full h-full">
+              return (
+                <>
+                  {/* Main Image Carousel */}
+                  <Card className="overflow-hidden">
+                    <Carousel setApi={setCarouselApi} className="w-full">
                       <CarouselContent>
                         {displayImages.map((image, index) => (
                           <CarouselItem key={index}>
-                            <img
-                              src={image || "/placeholder.svg"}
-                              alt={`${product.name} - ${selectedColor} - Image ${index + 1}`}
-                              className="w-full h-full object-cover"
-                            />
+                            <div className="aspect-square relative">
+                              <img
+                                src={image || "/placeholder.svg"}
+                                alt={`${product.name} - Image ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                              {product.is_featured && index === 0 && (
+                                <Badge className="absolute top-4 left-4 bg-gradient-gold text-primary-gold-foreground z-10">
+                                  <Star className="h-3 w-3 mr-1" />
+                                  Featured
+                                </Badge>
+                              )}
+                            </div>
                           </CarouselItem>
                         ))}
                       </CarouselContent>
-                      <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
-                      <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
-                      
-                      {/* Image indicator dots */}
-                      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-                        {displayImages.map((_, index) => (
-                          <div 
-                            key={index} 
-                            className="w-2 h-2 bg-white/50 rounded-full"
-                          />
-                        ))}
-                      </div>
+                      {displayImages.length > 1 && (
+                        <>
+                          <CarouselPrevious className="left-4" />
+                          <CarouselNext className="right-4" />
+                        </>
+                      )}
                     </Carousel>
-                  ) : (
-                    <img
-                      src={displayImages[0] || "/placeholder.svg"}
-                      alt={`${product.name} - ${selectedColor}`}
-                      className="w-full h-full object-cover"
-                    />
-                  );
-                })()}
-                
-                {/* Featured Badge */}
-                {product.is_featured && (
-                  <Badge className="absolute top-4 left-4 bg-gradient-gold text-primary-gold-foreground z-10">
-                    <Star className="h-3 w-3 mr-1" />
-                    Featured
-                  </Badge>
-                )}
-              </div>
-            </Card>
+                  </Card>
+
+                  {/* Thumbnail Gallery */}
+                  {displayImages.length > 1 && (
+                    <div className="grid grid-cols-4 gap-3">
+                      {displayImages.map((image, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setSelectedImageIndex(index);
+                            carouselApi?.scrollTo(index);
+                          }}
+                          className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                            selectedImageIndex === index
+                              ? 'border-primary shadow-lg'
+                              : 'border-border hover:border-primary/50'
+                          }`}
+                        >
+                          <img
+                            src={image || "/placeholder.svg"}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
 
-          {/* Product Details */}
+          {/* Product Details & Specifications */}
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">
                 {product.name}
               </h1>
-              <Badge variant="secondary" className="capitalize">
-                Category
-              </Badge>
+              {product.specifications?.brand && (
+                <Badge variant="secondary" className="capitalize">
+                  {product.specifications.brand}
+                </Badge>
+              )}
             </div>
 
-            <div className="text-4xl font-bold text-primary">
-              ₹{product.base_price.toFixed(2)}
+            <div className="flex items-baseline gap-2">
+              <span className="text-4xl font-bold text-primary">
+                ₹{product.base_price.toFixed(2)}
+              </span>
+              <span className="text-muted-foreground">/ Piece</span>
             </div>
 
-            <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">Description</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {product.description}
-              </p>
-            </div>
+            {/* Specifications Table */}
+            {product.specifications && Object.keys(product.specifications).length > 0 && (
+              <Card>
+                <CardContent className="p-0">
+                  <div className="divide-y divide-border">
+                    {Object.entries(product.specifications).map(([key, value]) => (
+                      value && (
+                        <div key={key} className="grid grid-cols-2 gap-4 p-3">
+                          <div className="font-medium text-foreground capitalize">
+                            {key.replace(/_/g, ' ')}
+                          </div>
+                          <div className="text-muted-foreground">{value}</div>
+                        </div>
+                      )
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Product Features */}
+            {product.features && product.features.length > 0 && (
+              <div>
+                <ul className="space-y-2">
+                  {product.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2 text-muted-foreground">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Color Selector */}
             {product.color_variants && product.color_variants.length > 0 && (
@@ -392,7 +464,10 @@ const ProductDetails = () => {
                   {product.color_variants.map((variant) => (
                     <button
                       key={variant.color}
-                      onClick={() => setSelectedColor(variant.color)}
+                      onClick={() => {
+                        setSelectedColor(variant.color);
+                        setSelectedImageIndex(0);
+                      }}
                       className={`px-4 py-2 rounded-lg border-2 transition-all ${
                         selectedColor === variant.color
                           ? 'border-primary bg-primary text-primary-foreground'
@@ -406,55 +481,65 @@ const ProductDetails = () => {
               </div>
             )}
 
-            {/* Quantity Selector */}
-            <div>
-              <h3 className="text-lg font-semibold text-foreground mb-3">Quantity</h3>
-              <div className="flex items-center space-x-3">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={decrementQuantity}
-                  disabled={quantity <= 1}
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                
-                <span className="text-xl font-semibold min-w-[3rem] text-center">
-                  {quantity}
-                </span>
-                
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={incrementQuantity}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
             {/* Action Buttons */}
-            <div className="flex space-x-4">
-              <Button
-                onClick={handleAddToCart}
-                disabled={isAddingToCart}
-                className="flex-1"
-                size="lg"
-              >
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                {isAddingToCart ? "Adding..." : "Add to Cart"}
-              </Button>
-              
+            <div className="space-y-3">
               <Button
                 variant="outline"
                 size="lg"
-                onClick={handleToggleFavorite}
-                disabled={isTogglingFavorite}
+                className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                onClick={() => {
+                  toast({
+                    title: "Quote Request",
+                    description: "Please contact us via WhatsApp or email for a quote.",
+                  });
+                }}
               >
-                <Heart 
-                  className={`h-5 w-5 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} 
-                />
+                Get Best Quote
               </Button>
+              
+              <Button
+                size="lg"
+                className="w-full bg-destructive hover:bg-destructive/90"
+                onClick={() => {
+                  if (!user) {
+                    toast({
+                      title: "Please login",
+                      description: "You need to be logged in to express interest",
+                      variant: "destructive",
+                    });
+                    return;
+                  }
+                  toast({
+                    title: "Interest Noted!",
+                    description: "We'll contact you shortly about this product.",
+                  });
+                }}
+              >
+                <span className="mr-2">✉</span>
+                Yes! I am interested
+              </Button>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart}
+                  className="flex-1"
+                  variant="secondary"
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  {isAddingToCart ? "Adding..." : "Add to Cart"}
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={handleToggleFavorite}
+                  disabled={isTogglingFavorite}
+                >
+                  <Heart 
+                    className={`h-5 w-5 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} 
+                  />
+                </Button>
+              </div>
             </div>
           </div>
         </div>

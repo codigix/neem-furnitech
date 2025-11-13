@@ -7,77 +7,77 @@ Clean, contemporary aesthetic with refined interactions */
 
 @layer base {
   :root {
-    /* Base Colors - Modern minimalist palette */
+    /* Base Colors - Premium Purple & Green Theme aligned with Neem Furnitech Logo */
     --background: 0 0% 100%;
-    --foreground: 0 0% 10%;
+    --foreground: 270 10% 15%;
 
     /* Card & Surface Colors */
-    --card: 0 0% 97.5%;
-    --card-foreground: 0 0% 10%;
+    --card: 0 0% 98%;
+    --card-foreground: 270 10% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover-foreground: 270 10% 15%;
 
-    /* Primary - Deep charcoal gray */
-    --primary: 0 0% 10%;
+    /* Primary - Premium Purple (from logo) */
+    --primary: 270 60% 45%;
     --primary-foreground: 0 0% 100%;
     
-    /* Accent - Modern teal */
-    --primary-gold: 175 84% 24%;
+    /* Accent - Vibrant Green (from logo) */
+    --primary-gold: 110 70% 50%;
     --primary-gold-foreground: 0 0% 100%;
 
-    /* Secondary - Soft sage */
-    --secondary: 12 45% 77%;
-    --secondary-foreground: 0 0% 10%;
+    /* Secondary - Soft Gray */
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 270 10% 15%;
 
     /* Muted tones */
-    --muted: 0 0% 91%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 0 0% 93%;
+    --muted-foreground: 0 0% 50%;
 
-    /* Accent - Deep teal */
-    --accent: 175 84% 24%;
+    /* Accent - Vibrant Green */
+    --accent: 110 70% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 73% 60%;
     --destructive-foreground: 0 0% 100%;
 
     /* Borders & Inputs */
-    --border: 0 0% 91%;
+    --border: 0 0% 92%;
     --input: 0 0% 97.5%;
-    --ring: 175 84% 24%;
+    --ring: 270 60% 45%;
 
     /* Design tokens */
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, #f9f9f9 0%, #f5f5f5 100%);
-    --gradient-card: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
-    --gradient-gold: linear-gradient(135deg, #0d7377 0%, #0a5463 100%);
+    --gradient-hero: linear-gradient(135deg, #6b3fa0 0%, #8b5cf6 100%);
+    --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f7ff 100%);
+    --gradient-gold: linear-gradient(135deg, #6ec84d 0%, #5fb949 100%);
     
     /* Shadows */
-    --shadow-elegant: 0 8px 24px rgba(26, 26, 26, 0.12);
-    --shadow-card: 0 2px 8px rgba(26, 26, 26, 0.06);
-    --shadow-glow: 0 0 40px rgba(13, 115, 119, 0.08);
+    --shadow-elegant: 0 10px 30px rgba(107, 63, 160, 0.15);
+    --shadow-card: 0 4px 12px rgba(107, 63, 160, 0.08);
+    --shadow-glow: 0 0 50px rgba(110, 200, 77, 0.15);
     
     /* Animations */
-    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
-    --sidebar-foreground: 0 0% 10%;
+    --sidebar-foreground: 270 10% 15%;
 
-    --sidebar-primary: 175 84% 24%;
+    --sidebar-primary: 270 60% 45%;
 
     --sidebar-primary-foreground: 0 0% 100%;
 
-    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent: 110 70% 50%;
 
-    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
 
-    --sidebar-border: 0 0% 91%;
+    --sidebar-border: 0 0% 92%;
 
-    --sidebar-ring: 175 84% 24%;
+    --sidebar-ring: 270 60% 45%;
   }
 
   .dark {
@@ -126,24 +126,75 @@ Clean, contemporary aesthetic with refined interactions */
 
   body {
     @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
   }
 
   h1 {
-    @apply text-4xl font-bold tracking-tight;
+    font-family: 'Poppins', sans-serif;
+    @apply text-5xl md:text-7xl font-black tracking-tight leading-tight;
+    letter-spacing: -0.025em;
+    font-weight: 900;
   }
 
   h2 {
-    @apply text-3xl font-bold tracking-tight;
+    font-family: 'Poppins', sans-serif;
+    @apply text-4xl md:text-5xl leading-snug;
+    letter-spacing: -0.015em;
+    font-weight: 800;
   }
 
   h3 {
-    @apply text-2xl font-semibold tracking-tight;
+    font-family: 'Poppins', sans-serif;
+    @apply text-2xl md:text-3xl tracking-tight;
+    font-weight: 700;
   }
 
   h4 {
-    @apply text-xl font-semibold;
+    font-family: 'Poppins', sans-serif;
+    @apply text-xl md:text-2xl;
+    font-weight: 700;
+  }
+
+  h5 {
+    font-family: 'Poppins', sans-serif;
+    @apply text-lg;
+    font-weight: 600;
+  }
+
+  h6 {
+    font-family: 'Poppins', sans-serif;
+    @apply text-base;
+    font-weight: 600;
+  }
+
+  p {
+    font-family: 'Inter', sans-serif;
+    @apply text-base md:text-lg leading-relaxed;
+    color: hsl(var(--muted-foreground));
+    font-weight: 400;
+  }
+
+  strong {
+    font-family: 'Inter', sans-serif;
+    @apply font-semibold;
+  }
+
+  .text-muted-foreground {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+  }
+
+  .font-semibold {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+
+  .font-bold {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
   }
 }

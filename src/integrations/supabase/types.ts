@@ -245,12 +245,14 @@ export type Database = {
           color_variants: Json | null
           created_at: string
           description: string | null
+          features: string[] | null
           id: string
           image_url: string | null
           images: string[] | null
           is_active: boolean | null
           is_featured: boolean | null
           name: string
+          specifications: Json | null
           updated_at: string
         }
         Insert: {
@@ -259,12 +261,14 @@ export type Database = {
           color_variants?: Json | null
           created_at?: string
           description?: string | null
+          features?: string[] | null
           id?: string
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean | null
           is_featured?: boolean | null
           name: string
+          specifications?: Json | null
           updated_at?: string
         }
         Update: {
@@ -273,12 +277,14 @@ export type Database = {
           color_variants?: Json | null
           created_at?: string
           description?: string | null
+          features?: string[] | null
           id?: string
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean | null
           is_featured?: boolean | null
           name?: string
+          specifications?: Json | null
           updated_at?: string
         }
         Relationships: [

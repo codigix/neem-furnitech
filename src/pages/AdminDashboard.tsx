@@ -131,6 +131,18 @@ const AdminDashboard = () => {
     is_featured: false,
     colors: "",
     color_variants: [] as { color: string; images: string[] }[],
+    specifications: {
+      chair_type: "",
+      arm_type: "",
+      brand: "",
+      height_adjustable: "",
+      back_type: "",
+      warranty: "",
+      seat_material: "",
+      upholstery_material: "",
+      model: "",
+    },
+    features: [] as string[],
   });
   const [productUploadMethod, setProductUploadMethod] = useState<
     "url" | "file"
@@ -645,6 +657,8 @@ const AdminDashboard = () => {
         image_url: firstVariantImage,
         is_featured: productForm.is_featured,
         color_variants: processedVariants.filter(v => v.color && v.images.length > 0),
+        specifications: productForm.specifications,
+        features: productForm.features.filter(f => f.trim() !== ''),
       };
 
       if (editingProduct) {
@@ -689,6 +703,18 @@ const AdminDashboard = () => {
       is_featured: false,
       colors: "",
       color_variants: [],
+      specifications: {
+        chair_type: "",
+        arm_type: "",
+        brand: "",
+        height_adjustable: "",
+        back_type: "",
+        warranty: "",
+        seat_material: "",
+        upholstery_material: "",
+        model: "",
+      },
+      features: [],
     });
     setShowAddProduct(false);
     setEditingProduct(null);
@@ -711,6 +737,18 @@ const AdminDashboard = () => {
       is_featured: product.is_featured,
       colors: "",
       color_variants: product.color_variants || [],
+      specifications: (product as any).specifications || {
+        chair_type: "",
+        arm_type: "",
+        brand: "",
+        height_adjustable: "",
+        back_type: "",
+        warranty: "",
+        seat_material: "",
+        upholstery_material: "",
+        model: "",
+      },
+      features: (product as any).features || [],
     });
     setEditingProduct(product);
     setShowAddProduct(true);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -91,8 +91,10 @@ const Auth = () => {
       <Card className="w-full max-w-md bg-background shadow-elegant">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="h-8 w-8 bg-gradient-hero rounded-lg"></div>
-            <span className="text-2xl font-bold text-primary">ChairCraft</span>
+            <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+                      <img src="src/neemfurnitech.png" alt="Neem Furnitech" className="w-[125px] h-auto" />
+                      
+                    </Link>
           </div>
           <CardTitle className="text-2xl">Welcome</CardTitle>
           <CardDescription>
