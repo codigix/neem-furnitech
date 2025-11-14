@@ -66,21 +66,21 @@ const Footer = () => {
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-primary-gold flex-shrink-0" />
-                <a href="mailto:hello@neemfurnitech.com" className="text-muted-foreground hover:text-foreground transition-colors">
-                  hello@neemfurnitech.com
+                <a href="mailto:neemfurnitech@gmail.com" className="text-muted-foreground hover:text-foreground transition-colors">
+                  neemfurnitech@gmail.com
                 </a>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Phone className="h-4 w-4 text-primary-gold flex-shrink-0" />
-                <a href="tel:+15551234567" className="text-muted-foreground hover:text-foreground transition-colors">
-                  +1 (555) 123-4567
+                <a href="tel:+919922754689" className="text-muted-foreground hover:text-foreground transition-colors">
+                  +91 99227 54689
                 </a>
               </div>
               <div className="flex items-start gap-2 text-sm">
                 <MapPin className="h-4 w-4 text-primary-gold flex-shrink-0 mt-0.5" />
                 <span className="text-muted-foreground">
-                  123 Design Street<br />
-                  Creative District, NY 10001
+                  Plot No. PAP/J-4, Indrayani Nagar<br />
+                  MIDC Bhosari, Pune 411026
                 </span>
               </div>
             </div>

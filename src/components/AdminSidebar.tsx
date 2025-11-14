@@ -49,7 +49,7 @@ export function AdminSidebar() {
     (path === "/admin/dashboard" && currentPath === "/admin/dashboard");
   
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" : "hover:bg-sidebar-accent/50";
+    isActive ? "bg-sidebar-accent  font-medium" : "hover:bg-sidebar-accent/50";
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
