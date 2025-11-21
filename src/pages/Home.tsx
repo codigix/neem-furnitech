@@ -113,7 +113,7 @@ const Home = () => {
           align: "center",
           loop: false,
         }}
-        plugins={plugin}
+        plugins={plugin as any}
         className="w-full"
         
       >
@@ -181,7 +181,7 @@ const Home = () => {
                     </Link>
                   </Button>
                   <Button size="lg" variant="outline" asChild className="bg-white/15 border border-white text-white hover:bg-white hover:text-primary transition-all px-8 py-6 text-base font-semibold backdrop-blur-sm rounded-lg">
-                    <a href="tel:+919922754689">📞 Call Now</a>
+                    <a href="tel:+918047643560">📞 Call Now</a>
                   </Button>
                 </div>
               </div>
@@ -210,8 +210,8 @@ const Home = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
                   <Button size="lg" asChild className="bg-white text-primary-gold hover:bg-white/90  hover:shadow-xl transition-all px-8 py-6 text-base font-semibold rounded-lg">
-                    <a href="tel:+919922754689" className="flex items-center gap-2">
-                      📞 +91-99227 54689
+                    <a href="tel:+918047643560" className="flex items-center gap-2">
+                      📞 +91-8047643560
                     </a>
                   </Button>
                   <Button size="lg" variant="outline" asChild className="bg-white/15 border border-white text-white hover:bg-white hover:text-primary-gold transition-all px-8 py-6 text-base font-semibold backdrop-blur-sm rounded-lg">
@@ -406,8 +406,8 @@ const Home = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button size="lg" asChild className="bg-white text-primary hover:bg-white/90  hover:shadow-xl transition-all px-8 py-6 text-base font-semibold rounded-lg">
-              <a href="tel:+919922754689" className="flex items-center gap-2">
-                📞 Call: +91-99227 54689
+              <a href="tel:+918047643560" className="flex items-center gap-2">
+                📞 Call: +91-8047643560
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild className=" border-white bg-primary text-white hover:bg-white hover:text-primary transition-all px-8 py-6 text-base font-semibold rounded-lg">

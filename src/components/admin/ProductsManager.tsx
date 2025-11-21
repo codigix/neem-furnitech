@@ -59,7 +59,7 @@ interface ProductsManagerProps {
     colors: string;
     color_variants: ColorVariant[];
     specifications: {
-      chair_type: string;
+      product_type: string;
       arm_type: string;
       brand: string;
       height_adjustable: string;
@@ -238,17 +238,17 @@ export function ProductsManager({
                 <Label>Product Specifications</Label>
                 <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
                   <div>
-                    <Label htmlFor="chair_type">Chair Type</Label>
+                    <Label htmlFor="product_type">Product Type</Label>
                     <Input
-                      id="chair_type"
-                      value={productForm.specifications.chair_type}
+                      id="product_type"
+                      value={productForm.specifications.product_type}
                       onChange={(e) =>
                         setProductForm((prev) => ({
                           ...prev,
-                          specifications: { ...prev.specifications, chair_type: e.target.value }
+                          specifications: { ...prev.specifications, product_type: e.target.value }
                         }))
                       }
-                      placeholder="e.g., Executive Chair"
+                      placeholder="e.g., Executive Chair, Dining Table, Study Desk"
                     />
                   </div>
                   <div>

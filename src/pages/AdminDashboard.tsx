@@ -132,7 +132,7 @@ const AdminDashboard = () => {
     colors: "",
     color_variants: [] as { color: string; images: string[] }[],
     specifications: {
-      chair_type: "",
+      product_type: "",
       arm_type: "",
       brand: "",
       height_adjustable: "",
@@ -704,7 +704,7 @@ const AdminDashboard = () => {
       colors: "",
       color_variants: [],
       specifications: {
-        chair_type: "",
+        product_type: "",
         arm_type: "",
         brand: "",
         height_adjustable: "",
@@ -738,7 +738,7 @@ const AdminDashboard = () => {
       colors: "",
       color_variants: product.color_variants || [],
       specifications: (product as any).specifications || {
-        chair_type: "",
+        product_type: "",
         arm_type: "",
         brand: "",
         height_adjustable: "",

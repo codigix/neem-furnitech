@@ -261,7 +261,7 @@ const About = () => {
                 <CardContent className="p-6">
                   <p className="text-lg">
                     <span className="font-semibold text-primary-gold">Address:</span>
-                    <span className="ml-3 text-muted-foreground">Plot No. PAP/J-4, Indrayani Nagar, MIDC Bhosari, Pune 411026</span>
+                    <span className="ml-3 text-muted-foreground">Plot No. Pap/j-4, Indrayani Nagar, Pune - 411026, Maharashtra, India</span>
                   </p>
                 </CardContent>
               </Card>
@@ -269,8 +269,8 @@ const About = () => {
                 <CardContent className="p-6 flex items-center justify-between">
                   <div>
                     <span className="font-semibold text-primary-gold text-lg">Phone:</span>
-                    <a href="tel:+919922754689" className="ml-3 text-2xl font-bold text-primary hover:text-primary-gold transition-colors">
-                      +91-99227 54689
+                    <a href="tel:+918047643560" className="ml-3 text-2xl font-bold text-primary hover:text-primary-gold transition-colors">
+                      +91-8047643560
                     </a>
                   </div>
                   <div className="text-right">

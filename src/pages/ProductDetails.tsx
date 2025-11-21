@@ -27,7 +27,7 @@ interface Product {
   colors?: string[];
   color_variants?: ColorVariant[];
   specifications?: {
-    chair_type?: string;
+    product_type?: string;
     arm_type?: string;
     brand?: string;
     height_adjustable?: string;
