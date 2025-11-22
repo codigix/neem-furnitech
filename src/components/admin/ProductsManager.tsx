@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, X } from "lucide-react";
 
 // Keep types local to avoid cross-file coupling
 export interface ColorVariant {
@@ -62,13 +62,16 @@ interface ProductsManagerProps {
       product_type: string;
       arm_type: string;
       brand: string;
-      height_adjustable: string;
-      back_type: string;
-      warranty: string;
-      seat_material: string;
-      upholstery_material: string;
       model: string;
+      height_adjustable: string;
+      seat_material: string;
+      frame_material: string;
+      usage: string;
+      colour: string;
+      warranty: string;
+      [key: string]: string;
     };
+    customSpecs: Array<{ label: string; value: string }>;
     features: string[];
   };
   setProductForm: React.Dispatch<React.SetStateAction<ProductsManagerProps["productForm"]>>;
@@ -235,8 +238,36 @@ export function ProductsManager({
               </div>
 
               <div>
-                <Label>Product Specifications</Label>
+                <Label>Basic Product Specifications</Label>
                 <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg">
+                  <div>
+                    <Label htmlFor="brand">Brand</Label>
+                    <Input
+                      id="brand"
+                      value={productForm.specifications.brand}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, brand: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Neem Furnitech"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="model">Model</Label>
+                    <Input
+                      id="model"
+                      value={productForm.specifications.model}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, model: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., NF 1102"
+                    />
+                  </div>
                   <div>
                     <Label htmlFor="product_type">Product Type</Label>
                     <Input
@@ -248,7 +279,7 @@ export function ProductsManager({
                           specifications: { ...prev.specifications, product_type: e.target.value }
                         }))
                       }
-                      placeholder="e.g., Executive Chair, Dining Table, Study Desk"
+                      placeholder="e.g., Executive Boss Chair"
                     />
                   </div>
                   <div>
@@ -262,21 +293,7 @@ export function ProductsManager({
                           specifications: { ...prev.specifications, arm_type: e.target.value }
                         }))
                       }
-                      placeholder="e.g., Fixed Arm"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="brand">Brand</Label>
-                    <Input
-                      id="brand"
-                      value={productForm.specifications.brand}
-                      onChange={(e) =>
-                        setProductForm((prev) => ({
-                          ...prev,
-                          specifications: { ...prev.specifications, brand: e.target.value }
-                        }))
-                      }
-                      placeholder="e.g., SATHYA"
+                      placeholder="e.g., Adjustable Arm"
                     />
                   </div>
                   <div>
@@ -294,17 +311,59 @@ export function ProductsManager({
                     />
                   </div>
                   <div>
-                    <Label htmlFor="back_type">Back Type</Label>
+                    <Label htmlFor="seat_material">Seat Material</Label>
                     <Input
-                      id="back_type"
-                      value={productForm.specifications.back_type}
+                      id="seat_material"
+                      value={productForm.specifications.seat_material}
                       onChange={(e) =>
                         setProductForm((prev) => ({
                           ...prev,
-                          specifications: { ...prev.specifications, back_type: e.target.value }
+                          specifications: { ...prev.specifications, seat_material: e.target.value }
                         }))
                       }
-                      placeholder="e.g., High Back"
+                      placeholder="e.g., Premium cushioned fabric"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="frame_material">Frame Material</Label>
+                    <Input
+                      id="frame_material"
+                      value={productForm.specifications.frame_material}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, frame_material: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Chrome plating Base"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="usage">Usage</Label>
+                    <Input
+                      id="usage"
+                      value={productForm.specifications.usage}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, usage: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., Office"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="colour">Colour</Label>
+                    <Input
+                      id="colour"
+                      value={productForm.specifications.colour}
+                      onChange={(e) =>
+                        setProductForm((prev) => ({
+                          ...prev,
+                          specifications: { ...prev.specifications, colour: e.target.value }
+                        }))
+                      }
+                      placeholder="e.g., All colour Available"
                     />
                   </div>
                   <div>
@@ -321,49 +380,75 @@ export function ProductsManager({
                       placeholder="e.g., 1 Year"
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="seat_material">Seat Material</Label>
-                    <Input
-                      id="seat_material"
-                      value={productForm.specifications.seat_material}
-                      onChange={(e) =>
-                        setProductForm((prev) => ({
-                          ...prev,
-                          specifications: { ...prev.specifications, seat_material: e.target.value }
-                        }))
-                      }
-                      placeholder="e.g., Microfiber"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="upholstery_material">Upholstery Material</Label>
-                    <Input
-                      id="upholstery_material"
-                      value={productForm.specifications.upholstery_material}
-                      onChange={(e) =>
-                        setProductForm((prev) => ({
-                          ...prev,
-                          specifications: { ...prev.specifications, upholstery_material: e.target.value }
-                        }))
-                      }
-                      placeholder="e.g., Fabric"
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <Label htmlFor="model">Model</Label>
-                    <Input
-                      id="model"
-                      value={productForm.specifications.model}
-                      onChange={(e) =>
-                        setProductForm((prev) => ({
-                          ...prev,
-                          specifications: { ...prev.specifications, model: e.target.value }
-                        }))
-                      }
-                      placeholder="e.g., Godrez HB Director Executive Chair"
-                    />
-                  </div>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>Additional Specifications (Product Specific)</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setProductForm((prev) => ({
+                        ...prev,
+                        customSpecs: [...prev.customSpecs, { label: "", value: "" }]
+                      }));
+                    }}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Custom Specification
+                  </Button>
+                </div>
+                {productForm.customSpecs.length > 0 && (
+                  <div className="space-y-3 p-4 border rounded-lg">
+                    {productForm.customSpecs.map((spec, index) => (
+                      <div key={index} className="flex gap-2 items-end">
+                        <div className="flex-1">
+                          <Label htmlFor={`custom-label-${index}`}>Specification Name</Label>
+                          <Input
+                            id={`custom-label-${index}`}
+                            value={spec.label}
+                            onChange={(e) => {
+                              const newSpecs = [...productForm.customSpecs];
+                              newSpecs[index].label = e.target.value;
+                              setProductForm((prev) => ({ ...prev, customSpecs: newSpecs }));
+                            }}
+                            placeholder="e.g., Weight Capacity, Dimensions"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <Label htmlFor={`custom-value-${index}`}>Value</Label>
+                          <Input
+                            id={`custom-value-${index}`}
+                            value={spec.value}
+                            onChange={(e) => {
+                              const newSpecs = [...productForm.customSpecs];
+                              newSpecs[index].value = e.target.value;
+                              setProductForm((prev) => ({ ...prev, customSpecs: newSpecs }));
+                            }}
+                            placeholder="e.g., 150 kg, 120x80x75 cm"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          onClick={() => {
+                            const newSpecs = productForm.customSpecs.filter((_, i) => i !== index);
+                            setProductForm((prev) => ({ ...prev, customSpecs: newSpecs }));
+                          }}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <p className="text-sm text-muted-foreground">
+                  Add product-specific specifications like Weight Capacity, Dimensions, Load Bearing, etc.
+                </p>
               </div>
 
               <div>

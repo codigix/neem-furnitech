@@ -26,18 +26,7 @@ interface Product {
   is_featured: boolean;
   colors?: string[];
   color_variants?: ColorVariant[];
-  specifications?: {
-    product_type?: string;
-    arm_type?: string;
-    brand?: string;
-    height_adjustable?: string;
-    back_type?: string;
-    warranty?: string;
-    seat_material?: string;
-    upholstery_material?: string;
-    model?: string;
-    [key: string]: any;
-  };
+  specifications?: Record<string, string>;
   features?: string[];
 }
 

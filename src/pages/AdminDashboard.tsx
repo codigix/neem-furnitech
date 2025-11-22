@@ -135,13 +135,15 @@ const AdminDashboard = () => {
       product_type: "",
       arm_type: "",
       brand: "",
-      height_adjustable: "",
-      back_type: "",
-      warranty: "",
-      seat_material: "",
-      upholstery_material: "",
       model: "",
+      height_adjustable: "",
+      seat_material: "",
+      frame_material: "",
+      usage: "",
+      colour: "",
+      warranty: ""
     },
+    customSpecs: [] as { label: string; value: string }[],
     features: [] as string[],
   });
   const [productUploadMethod, setProductUploadMethod] = useState<
@@ -657,7 +659,15 @@ const AdminDashboard = () => {
         image_url: firstVariantImage,
         is_featured: productForm.is_featured,
         color_variants: processedVariants.filter(v => v.color && v.images.length > 0),
-        specifications: productForm.specifications,
+        specifications: {
+          ...productForm.specifications,
+          ...productForm.customSpecs.reduce((acc, spec) => {
+            if (spec.label && spec.value) {
+              acc[spec.label.toLowerCase().replace(/\s+/g, '_')] = spec.value;
+            }
+            return acc;
+          }, {} as Record<string, string>)
+        },
         features: productForm.features.filter(f => f.trim() !== ''),
       };
 
@@ -707,13 +717,15 @@ const AdminDashboard = () => {
         product_type: "",
         arm_type: "",
         brand: "",
-        height_adjustable: "",
-        back_type: "",
-        warranty: "",
-        seat_material: "",
-        upholstery_material: "",
         model: "",
+        height_adjustable: "",
+        seat_material: "",
+        frame_material: "",
+        usage: "",
+        colour: "",
+        warranty: ""
       },
+      customSpecs: [],
       features: [],
     });
     setShowAddProduct(false);
@@ -727,6 +739,9 @@ const AdminDashboard = () => {
   };
 
   const editProduct = (product: Product) => {
+    const specs = (product as any).specifications || {};
+    const standardKeys = ['product_type', 'arm_type', 'brand', 'model', 'height_adjustable', 'seat_material', 'frame_material', 'usage', 'colour', 'warranty'];
+    
     setProductForm({
       name: product.name,
       price: product.base_price.toString(),
@@ -737,17 +752,24 @@ const AdminDashboard = () => {
       is_featured: product.is_featured,
       colors: "",
       color_variants: product.color_variants || [],
-      specifications: (product as any).specifications || {
-        product_type: "",
-        arm_type: "",
-        brand: "",
-        height_adjustable: "",
-        back_type: "",
-        warranty: "",
-        seat_material: "",
-        upholstery_material: "",
-        model: "",
+      specifications: {
+        product_type: specs.product_type || "",
+        arm_type: specs.arm_type || "",
+        brand: specs.brand || "",
+        model: specs.model || "",
+        height_adjustable: specs.height_adjustable || "",
+        seat_material: specs.seat_material || "",
+        frame_material: specs.frame_material || "",
+        usage: specs.usage || "",
+        colour: specs.colour || "",
+        warranty: specs.warranty || ""
       },
+      customSpecs: Object.keys(specs)
+        .filter(key => !standardKeys.includes(key))
+        .map(key => ({ 
+          label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '), 
+          value: specs[key] 
+        })),
       features: (product as any).features || [],
     });
     setEditingProduct(product);
