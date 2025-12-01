@@ -218,12 +218,12 @@ const Checkout = () => {
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <Button variant="outline" onClick={() => navigate('/cart')} className="mb-4">
+          <Button variant="outline" onClick={() => navigate('/cart')} className="mb-3">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Cart
           </Button>
-          <h1 className="text-3xl font-bold text-primary mb-2">Checkout</h1>
-          <p className="text-foreground/70">Complete your purchase</p>
+          <h1 className="text-2xl font-bold text-primary mb-1">Checkout</h1>
+          <p className="text-xs text-foreground/70">Complete your purchase</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -320,8 +320,8 @@ const Checkout = () => {
                 </RadioGroup>
                 
                 {paymentMethod === "card" && (
-                  <div className="mt-4 p-4 bg-background/50 rounded-lg">
-                    <p className="text-sm text-foreground/70">
+                  <div className="mt-3 p-3 bg-background/50 rounded-lg">
+                    <p className="text-xs text-foreground/70">
                       Card payment integration would be implemented here with a payment processor like Stripe.
                     </p>
                   </div>
@@ -342,18 +342,18 @@ const Checkout = () => {
               <CardContent>
                 <div className="space-y-4">
                   {/* Order Items */}
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {cartItems.map((item) => (
-                      <div key={item.id} className="flex gap-3">
+                      <div key={item.id} className="flex gap-2">
                         <img
                           src={item.products.image_url || "/placeholder.svg"}
                           alt={item.products.name}
-                          className="w-16 h-16 object-cover rounded"
+                          className="w-14 h-14 object-cover rounded"
                         />
                         <div className="flex-1">
-                          <h4 className="font-medium">{item.products.name}</h4>
-                          <p className="text-sm text-foreground/70">Qty: {item.quantity}</p>
-                           <p className="font-semibold">
+                          <h4 className="text-sm font-medium">{item.products.name}</h4>
+                          <p className="text-xs text-foreground/70">Qty: {item.quantity}</p>
+                           <p className="text-sm font-semibold">
                             ₹{(item.products.base_price * item.quantity).toFixed(2)}
                           </p>
                         </div>
@@ -361,21 +361,21 @@ const Checkout = () => {
                     ))}
                   </div>
 
-                  <div className="border-t pt-4 space-y-2">
-                    <div className="flex justify-between">
+                  <div className="border-t pt-2 space-y-1 text-sm">
+                    <div className="flex justify-between text-xs">
                       <span>Subtotal</span>
                       <span>₹{getTotalPrice().toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between text-xs">
                       <span>Shipping</span>
                       <span>Free</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between text-xs">
                       <span>Tax</span>
                       <span>₹0.00</span>
                     </div>
-                    <div className="border-t pt-2">
-                      <div className="flex justify-between font-bold text-lg">
+                    <div className="border-t pt-1">
+                      <div className="flex justify-between font-bold text-sm">
                         <span>Total</span>
                         <span>₹{getTotalPrice().toFixed(2)}</span>
                       </div>

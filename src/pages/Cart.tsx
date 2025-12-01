@@ -169,19 +169,19 @@ const Cart = () => {
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <Button variant="outline" onClick={() => navigate(-1)} className="mb-4">
+          <Button variant="outline" onClick={() => navigate(-1)} className="mb-3">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Continue Shopping
           </Button>
-          <h1 className="text-3xl font-bold text-primary mb-2">Shopping Cart</h1>
-          <p className="text-foreground/70">{cartItems.length} items in your cart</p>
+          <h1 className="text-2xl font-bold text-primary mb-1">Shopping Cart</h1>
+          <p className="text-xs text-foreground/70">{cartItems.length} items in your cart</p>
         </div>
 
         {cartItems.length === 0 ? (
-          <Card className="text-center py-12">
+          <Card className="text-center py-8">
             <CardContent>
-              <h2 className="text-xl font-semibold mb-4">Your cart is empty</h2>
-              <p className="text-foreground/70 mb-6">Add some beautiful furniture to get started!</p>
+              <h2 className="text-base font-semibold mb-2">Your cart is empty</h2>
+              <p className="text-xs text-foreground/70 mb-4">Add some beautiful furniture to get started!</p>
               <Button onClick={() => navigate('/products')}>
                 Browse Products
               </Button>
@@ -194,20 +194,20 @@ const Cart = () => {
               {cartItems.map((item) => (
                 <Card key={item.id}>
                   <CardContent className="p-6">
-                    <div className="flex gap-4">
+                    <div className="flex gap-3">
                       <img
                         src={item.products.image_url || "/placeholder.svg"}
                         alt={item.products.name}
-                        className="w-24 h-24 object-cover rounded-lg"
+                        className="w-20 h-20 object-cover rounded-lg"
                       />
                       <div className="flex-1">
-                        <h3 className="font-semibold text-lg">{item.products.name}</h3>
+                        <h3 className="font-semibold text-sm">{item.products.name}</h3>
                         {item.selected_color && (
-                          <Badge variant="outline" className="mt-1">
+                          <Badge variant="outline" className="mt-1 text-xs">
                             Color: {item.selected_color}
                           </Badge>
                         )}
-                        <p className="text-primary font-bold text-xl mt-1">
+                        <p className="text-primary font-bold text-base mt-1">
                           ₹{item.products.base_price.toFixed(2)}
                         </p>
                         <div className="flex items-center gap-3 mt-4">
@@ -240,7 +240,7 @@ const Cart = () => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-bold">
+                        <p className="text-sm font-bold">
                           ₹{(item.products.base_price * item.quantity).toFixed(2)}
                         </p>
                       </div>
@@ -257,17 +257,17 @@ const Cart = () => {
                   <CardTitle>Order Summary</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between">
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between text-xs">
                       <span>Subtotal</span>
                       <span>₹{getTotalPrice().toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between text-xs">
                       <span>Shipping</span>
                       <span>Free</span>
                     </div>
-                    <div className="border-t pt-4">
-                      <div className="flex justify-between font-bold text-lg">
+                    <div className="border-t pt-2">
+                      <div className="flex justify-between font-bold text-sm">
                         <span>Total</span>
                         <span>₹{getTotalPrice().toFixed(2)}</span>
                       </div>

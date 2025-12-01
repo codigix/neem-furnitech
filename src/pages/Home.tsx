@@ -132,10 +132,10 @@ const Home = () => {
                 <div className="inline-block px-5 py-2 bg-white/15 backdrop-blur-md border border-white/25 rounded-full">
                   <p className="text-sm font-semibold text-white">✨ Premium Office Furniture</p>
                 </div>
-                <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+                <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">
                   Excellence in Every Detail
                 </h1>
-                <p className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto">
+                <p className="text-sm md:text-base text-white/95 max-w-2xl mx-auto">
                   Crafted for comfort. Designed for success. Built to last.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
@@ -167,10 +167,10 @@ const Home = () => {
                 <div className="inline-block px-5 py-2 bg-white/15 backdrop-blur-md border border-white/25 rounded-full">
                   <p className="text-sm font-semibold text-white">🏆 Industry Certified</p>
                 </div>
-                <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+                <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">
                   18+ Years of Trust
                 </h1>
-                <p className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto">
+                <p className="text-sm md:text-base text-white/95 max-w-2xl mx-auto">
                   GST Registered • IEC Certified • International Standards
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
@@ -202,10 +202,10 @@ const Home = () => {
                 <div className="inline-block px-5 py-2 bg-white/15 backdrop-blur-md border border-white/25 rounded-full">
                   <p className="text-sm font-semibold text-white">⚡ Instant Support</p>
                 </div>
-                <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+                <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">
                   Quotes in Minutes
                 </h1>
-                <p className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto">
+                <p className="text-sm md:text-base text-white/95 max-w-2xl mx-auto">
                   85% Call Response Rate • Expert Guidance • Tailored Solutions
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
@@ -230,11 +230,11 @@ const Home = () => {
       <section className="py-24 bg-gradient-to-b from-white via-primary/5 to-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(107,63,160,0.05),transparent_50%),radial-gradient(circle_at_bottom_left,rgba(110,200,77,0.05),transparent_50%)]"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-foreground">
               Why Choose Neem Furnitech?
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               We combine decades of manufacturing expertise with commitment to quality, ensuring every piece meets the highest standards.
             </p>
           </div>
@@ -279,12 +279,12 @@ const Home = () => {
               }
             ].map((item, idx) => (
               <Card key={idx} className="border border-primary/10 bg-gradient-to-br from-white to-primary/5 hover:shadow-elegant transition-all duration-300 hover:-translate-y-1">
-                <CardContent className="p-8 space-y-5">
-                  <div className={`w-14 h-14 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center `}>
-                    <item.icon className="h-7 w-7 text-white" />
+                <CardContent className="p-5 space-y-3">
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center `}>
+                    <item.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground">{item.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                  <h3 className="text-base font-bold text-foreground">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -306,8 +306,8 @@ const Home = () => {
               { label: "Response Rate", value: "85%" }
             ].map((stat, idx) => (
               <div key={idx} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold mb-2">{stat.value}</div>
-                <p className="text-white/90 text-sm md:text-base font-medium">{stat.label}</p>
+                <div className="text-2xl md:text-3xl font-bold mb-2">{stat.value}</div>
+                <p className="text-white/90 text-xs md:text-sm font-medium">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -317,11 +317,11 @@ const Home = () => {
       {/* Our Expertise Section */}
       <section className="py-24 bg-white relative">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+          <div className="max-w-3xl mx-auto text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-foreground">
               Our Product Range
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Comprehensive solutions for modern office environments with focus on comfort, durability, and professional design.
             </p>
           </div>
@@ -333,12 +333,12 @@ const Home = () => {
               { title: "Conference Chairs", desc: "Professional seating for meeting rooms" }
             ].map((prod, idx) => (
               <Card key={idx} className="border border-primary/10 bg-gradient-to-br from-primary/5 to-white hover:shadow-elegant transition-all">
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto">
-                    <Leaf className="h-6 w-6 text-primary" />
+                <CardContent className="p-5 text-center space-y-2">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto">
+                    <Leaf className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold">{prod.title}</h3>
-                  <p className="text-muted-foreground">{prod.desc}</p>
+                  <h3 className="text-base font-bold">{prod.title}</h3>
+                  <p className="text-xs text-muted-foreground">{prod.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -359,11 +359,11 @@ const Home = () => {
       {featuredProducts.length > 0 && (
         <section className="py-24 bg-gradient-to-b from-primary/5 to-white">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-foreground">
                 Featured Products
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 Our most popular selections, chosen by customers for their exceptional quality and design.
               </p>
             </div>
@@ -398,10 +398,10 @@ const Home = () => {
           <div className="absolute inset-0" style={{ backgroundImage: `url(${heroImage})`, backgroundAttachment: 'fixed' }}></div>
         </div>
         <div className="container mx-auto max-w-3xl text-center space-y-8 px-4 relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+          <h2 className="text-2xl md:text-3xl font-bold leading-tight">
             Ready to Transform Your Office?
           </h2>
-          <p className="text-lg md:text-xl text-white/95 leading-relaxed">
+          <p className="text-sm md:text-base text-white/95 leading-relaxed">
             Contact our team today for personalized consultations, competitive quotes, and professional furniture solutions tailored to your needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">

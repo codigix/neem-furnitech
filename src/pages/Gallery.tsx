@@ -75,9 +75,9 @@ const Gallery = () => {
       <Header />
       
       <main className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-primary mb-4">Gallery</h1>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-primary mb-2">Gallery</h1>
+          <p className="text-sm text-foreground/70 max-w-2xl mx-auto">
             Explore our collection of celebration moments and furniture inspirations
           </p>
         </div>
@@ -109,8 +109,8 @@ const Gallery = () => {
             </div>
 
             {filteredImages.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-foreground/70">No images found in this category.</p>
+              <div className="text-center py-8">
+                <p className="text-xs text-foreground/70">No images found in this category.</p>
               </div>
             )}
           </TabsContent>

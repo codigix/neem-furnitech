@@ -199,7 +199,7 @@ const Products = () => {
         <Header />
         <div className="container mx-auto px-4 py-12">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Loading Products...</h1>
+            <h1 className="text-2xl font-bold mb-4">Loading Products...</h1>
           </div>
         </div>
         <Footer />
@@ -213,9 +213,9 @@ const Products = () => {
       
       <div className="container mx-auto py-12">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-3">Our Collection</h1>
-          <p className="text-lg text-muted-foreground">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold mb-2">Our Collection</h1>
+          <p className="text-sm text-muted-foreground">
             Explore our carefully curated selection of premium furniture.
           </p>
         </div>
@@ -319,9 +319,9 @@ const Products = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <h3 className="text-xl font-semibold mb-2">No products found</h3>
-            <p className="text-muted-foreground mb-6">
+          <div className="text-center py-12">
+            <h3 className="text-base font-semibold mb-2">No products found</h3>
+            <p className="text-xs text-muted-foreground mb-4">
               Try adjusting your search or filters.
             </p>
             <Button variant="outline" onClick={handleClearFilters}>

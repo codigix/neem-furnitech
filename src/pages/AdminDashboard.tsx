@@ -38,6 +38,7 @@ import {
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { AdminDashboard as AdminDashboardComponent } from "@/components/admin/AdminDashboard";
 import { ProductsManager as ProductsManagerComponent } from "@/components/admin/ProductsManager";
+import { AdminProductEdit } from "@/components/admin/AdminProductEdit";
 import { CategoriesManager as CategoriesManagerComponent } from "@/components/admin/CategoriesManager";
 import { GalleryManager as GalleryManagerComponent } from "@/components/admin/GalleryManager";
 
@@ -738,43 +739,8 @@ const AdminDashboard = () => {
     if (fileInput) fileInput.value = "";
   };
 
-  const editProduct = (product: Product) => {
-    const specs = (product as any).specifications || {};
-    const standardKeys = ['product_type', 'arm_type', 'brand', 'model', 'height_adjustable', 'seat_material', 'frame_material', 'usage', 'colour', 'warranty'];
-    
-    setProductForm({
-      name: product.name,
-      price: product.base_price.toString(),
-      description: product.description || "",
-      category: product.category_id || "",
-      image_url: product.image_url || "",
-      stock: "0",
-      is_featured: product.is_featured,
-      colors: "",
-      color_variants: product.color_variants || [],
-      specifications: {
-        product_type: specs.product_type || "",
-        arm_type: specs.arm_type || "",
-        brand: specs.brand || "",
-        model: specs.model || "",
-        height_adjustable: specs.height_adjustable || "",
-        seat_material: specs.seat_material || "",
-        frame_material: specs.frame_material || "",
-        usage: specs.usage || "",
-        colour: specs.colour || "",
-        warranty: specs.warranty || ""
-      },
-      customSpecs: Object.keys(specs)
-        .filter(key => !standardKeys.includes(key))
-        .map(key => ({ 
-          label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '), 
-          value: specs[key] 
-        })),
-      features: (product as any).features || [],
-    });
-    setEditingProduct(product);
-    setShowAddProduct(true);
-    setProductUploadMethod("url");
+  const handleEditProduct = (productId: string) => {
+    navigate(`/admin/dashboard/products/${productId}/edit`);
   };
 
   const deleteProduct = async (productId: string) => {
@@ -1238,11 +1204,12 @@ const AdminDashboard = () => {
                     products={products}
                     handleProductSubmit={handleProductSubmit}
                     resetProductForm={resetProductForm}
-                    editProduct={editProduct}
+                    onEditProduct={handleEditProduct}
                     deleteProduct={deleteProduct}
                   />
                 }
               />
+              <Route path="products/:id/edit" element={<AdminProductEdit />} />
               <Route path="categories" element={
                 <CategoriesManagerComponent
                   showAddCategory={showAddCategory}

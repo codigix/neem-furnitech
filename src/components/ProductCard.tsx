@@ -215,12 +215,12 @@ const ProductCard = ({ product, userId, isFavorite = false, onFavoriteChange }: 
           )}
         </div>
         
-        <CardContent className="p-4 space-y-4">
+        <CardContent className="p-3 space-y-3">
           <div>
-            <h3 className="font-semibold text-foreground group-hover:text-primary-gold transition-colors line-clamp-1">
+            <h3 className="text-sm font-semibold text-foreground group-hover:text-primary-gold transition-colors line-clamp-1">
               {product.name}
             </h3>
-            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+            <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
               {product.description}
             </p>
           </div>
@@ -249,8 +249,8 @@ const ProductCard = ({ product, userId, isFavorite = false, onFavoriteChange }: 
             </div>
           )}
           
-          <div className="flex items-center justify-between pt-2">
-            <span className="text-lg font-bold text-primary-gold">
+          <div className="flex items-center justify-between pt-1">
+            <span className="text-sm font-bold text-primary-gold">
               ₹{product.base_price.toFixed(2)}
             </span>
             

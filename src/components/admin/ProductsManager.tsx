@@ -82,7 +82,7 @@ interface ProductsManagerProps {
   products: ProductItem[];
   handleProductSubmit: (e: React.FormEvent) => void;
   resetProductForm: () => void;
-  editProduct: (p: ProductItem) => void;
+  onEditProduct: (id: string) => void;
   deleteProduct: (id: string) => void;
 }
 
@@ -99,7 +99,7 @@ export function ProductsManager({
   products,
   handleProductSubmit,
   resetProductForm,
-  editProduct,
+  onEditProduct,
   deleteProduct,
 }: ProductsManagerProps) {
   return (
@@ -112,10 +112,10 @@ export function ProductsManager({
         </Button>
       </div>
 
-      {showAddProduct && (
+      {showAddProduct && !editingProduct && (
         <Card>
           <CardHeader>
-            <CardTitle>{editingProduct ? "Edit Product" : "Add New Product"}</CardTitle>
+            <CardTitle>Add New Product</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleProductSubmit} className="space-y-4">
@@ -658,7 +658,7 @@ export function ProductsManager({
                   {product.is_featured && <Badge className="mt-1">Featured</Badge>}
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={() => editProduct(product)}>
+                  <Button size="sm" variant="outline" onClick={() => onEditProduct(product.id)}>
                     <Edit className="h-3 w-3" />
                   </Button>
                   <Button size="sm" variant="destructive" onClick={() => deleteProduct(product.id)}>

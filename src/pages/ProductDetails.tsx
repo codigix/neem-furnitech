@@ -100,12 +100,6 @@ const ProductDetails = () => {
       };
 
       setProduct(productData);
-      // Set default color to first available color variant
-      if (productData.color_variants && productData.color_variants.length > 0) {
-        setSelectedColor(productData.color_variants[0].color);
-      } else if (productData.colors && productData.colors.length > 0) {
-        setSelectedColor(productData.colors[0]);
-      }
     } catch (error) {
       toast({
         title: "Error",
@@ -146,24 +140,14 @@ const ProductDetails = () => {
 
     if (!product) return;
 
-    if (!selectedColor) {
-      toast({
-        title: "Please select a color",
-        description: "Choose a color before adding to cart",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsAddingToCart(true);
     try {
-      // Check if item with same color already in cart
+      // Check if item already in cart
       const { data: existingItem } = await supabase
         .from('cart_items')
         .select('*')
         .eq('user_id', user.id)
         .eq('product_id', product.id)
-        .eq('selected_color', selectedColor)
         .single();
 
       if (existingItem) {
@@ -180,13 +164,13 @@ const ProductDetails = () => {
             user_id: user.id,
             product_id: product.id,
             quantity: quantity,
-            selected_color: selectedColor
+            selected_color: null
           });
       }
 
       toast({
         title: "Added to cart!",
-        description: `${quantity} x ${product.name} (${selectedColor}) has been added to your cart.`,
+        description: `${quantity} x ${product.name} has been added to your cart.`,
       });
       
       // Reset quantity after adding to cart
@@ -392,9 +376,9 @@ const ProductDetails = () => {
           </div>
 
           {/* Product Details & Specifications */}
-          <div className="space-y-6">
+          <div className="space-y-5">
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">
+              <h1 className="text-2xl font-bold text-foreground mb-2">
                 {product.name}
               </h1>
               {product.specifications?.brand && (
@@ -405,10 +389,10 @@ const ProductDetails = () => {
             </div>
 
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-primary">
+              <span className="text-2xl font-bold text-primary">
                 ₹{product.base_price.toFixed(2)}
               </span>
-              <span className="text-muted-foreground">/ Piece</span>
+              <span className="text-xs text-muted-foreground">/ Piece</span>
             </div>
 
             {/* Specifications Table */}
@@ -418,11 +402,11 @@ const ProductDetails = () => {
                   <div className="divide-y divide-border">
                     {Object.entries(product.specifications).map(([key, value]) => (
                       value && (
-                        <div key={key} className="grid grid-cols-2 gap-4 p-3">
-                          <div className="font-medium text-foreground capitalize">
+                        <div key={key} className="grid grid-cols-2 gap-2 p-2">
+                          <div className="font-medium text-xs text-foreground capitalize">
                             {key.replace(/_/g, ' ')}
                           </div>
-                          <div className="text-muted-foreground">{value}</div>
+                          <div className="text-xs text-muted-foreground">{value}</div>
                         </div>
                       )
                     ))}
@@ -434,39 +418,14 @@ const ProductDetails = () => {
             {/* Product Features */}
             {product.features && product.features.length > 0 && (
               <div>
-                <ul className="space-y-2">
+                <ul className="space-y-1">
                   {product.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2 text-muted-foreground">
+                    <li key={index} className="flex items-start gap-2 text-xs text-muted-foreground">
                       <span className="text-primary mt-1">•</span>
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
-
-            {/* Color Selector */}
-            {product.color_variants && product.color_variants.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-3">Select Color</h3>
-                <div className="flex flex-wrap gap-3">
-                  {product.color_variants.map((variant) => (
-                    <button
-                      key={variant.color}
-                      onClick={() => {
-                        setSelectedColor(variant.color);
-                        setSelectedImageIndex(0);
-                      }}
-                      className={`px-4 py-2 rounded-lg border-2 transition-all ${
-                        selectedColor === variant.color
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : 'border-border hover:border-primary/50'
-                      }`}
-                    >
-                      {variant.color}
-                    </button>
-                  ))}
-                </div>
               </div>
             )}
 
