@@ -16,7 +16,8 @@ import Footer from "@/components/Footer";
 import { ArrowRight, Check, Award, Zap, Shield, Truck, Users, Clock, Leaf, Hammer, Handshake } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-chair.jpg";
-
+import banner1 from "@/assets/banner1.jpeg";
+import banner2 from "@/assets/banner2.jpeg";
 interface Product {
   id: string;
   name: string;
@@ -158,7 +159,7 @@ const Home = () => {
             <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30">
               <div 
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${heroImage})` }}
+                style={{ backgroundImage: `url(${banner1})` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30"></div>
               </div>
@@ -193,7 +194,7 @@ const Home = () => {
             <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30">
               <div 
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${heroImage})` }}
+                style={{ backgroundImage: `url(${banner2})` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30"></div>
               </div>
