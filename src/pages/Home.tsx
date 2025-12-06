@@ -126,7 +126,7 @@ const Home = () => {
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${heroImage})` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30"></div>
+                <div className="absolute inset-0 bg-black/50"></div>
               </div>
               
               <div className="relative z-10 text-center text-white space-y-6 px-4 max-w-4xl">
@@ -156,12 +156,12 @@ const Home = () => {
 
           {/* Slide 2 - Certified & Trusted */}
           <CarouselItem className="pl-0">
-            <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30">
+            <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden">
               <div 
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${banner1})` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30"></div>
+                <div className="absolute inset-0 bg-black/50"></div>
               </div>
               
               <div className="relative z-10 text-center text-white space-y-6 px-4 max-w-4xl">
@@ -191,12 +191,12 @@ const Home = () => {
 
           {/* Slide 3 - Quick Response */}
           <CarouselItem className="pl-0">
-            <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30">
+            <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden">
               <div 
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${banner2})` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-primary-gold/30"></div>
+                <div className="absolute inset-0 bg-black/50"></div>
               </div>
               
               <div className="relative z-10 text-center text-white space-y-6 px-4 max-w-4xl">
@@ -394,7 +394,7 @@ const Home = () => {
       )}
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary via-primary-gold to-primary text-white relative overflow-hidden">
+      <section className="py-24 bg-slate-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{ backgroundImage: `url(${heroImage})`, backgroundAttachment: 'fixed' }}></div>
         </div>

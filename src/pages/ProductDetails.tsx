@@ -391,7 +391,7 @@ const ProductDetails = () => {
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           />
                           {product.is_featured && index === 0 && (
-                            <Badge className="absolute top-4 left-4 bg-gradient-gold text-primary-gold-foreground z-10">
+                            <Badge className="absolute top-4 left-4 bg-amber-500 text-white z-10">
                               <Star className="h-3 w-3 mr-1" />
                               Featured
                             </Badge>
