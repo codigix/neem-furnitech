@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from "@/components/ui/carousel";
-import { Heart, ShoppingCart, Star, ArrowLeft, Plus, Minus } from "lucide-react";
+import { Heart, ShoppingCart, Star, ArrowLeft, Plus, Minus, X, ZoomIn, ZoomOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
@@ -45,6 +45,10 @@ const ProductDetails = () => {
   const [user, setUser] = useState<any>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [displayImages, setDisplayImages] = useState<string[]>([]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -64,12 +68,83 @@ const ProductDetails = () => {
   }, [id]);
 
   useEffect(() => {
+    if (product && product.color_variants && product.color_variants.length > 0 && selectedColor === "") {
+      const firstColor = product.color_variants[0].color;
+      setSelectedColor(firstColor);
+    }
+  }, [product, selectedColor]);
+
+  useEffect(() => {
     if (!carouselApi) return;
     
     carouselApi.on("select", () => {
       setSelectedImageIndex(carouselApi.selectedScrollSnap());
     });
   }, [carouselApi]);
+
+  useEffect(() => {
+    if (product) {
+      let images: string[] = [];
+      
+      const isValidImageUrl = (img: any): boolean => {
+        return typeof img === 'string' && img.trim().length > 0;
+      };
+      
+      if (product.color_variants && product.color_variants.length > 0) {
+        const selectedVariant = product.color_variants.find(v => v.color === selectedColor);
+        if (selectedVariant && Array.isArray(selectedVariant.images) && selectedVariant.images.length > 0) {
+          images = selectedVariant.images.filter(isValidImageUrl);
+        }
+      }
+      
+      if (images.length === 0) {
+        if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+          images.push(...product.images.filter(isValidImageUrl));
+        }
+        
+        if (images.length === 0 && isValidImageUrl(product.image_url)) {
+          images.push(product.image_url);
+        }
+      }
+      
+      const uniqueImages = images.filter((img, index, arr) => isValidImageUrl(img) && arr.indexOf(img) === index);
+      setDisplayImages(uniqueImages);
+      console.log(`Product: ${product.name} | Total Images: ${uniqueImages.length}`);
+      if (uniqueImages.length > 0) {
+        console.log('Display Images:', uniqueImages);
+      }
+    }
+  }, [product, selectedColor]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isLightboxOpen) return;
+      
+      switch(e.key) {
+        case 'ArrowRight':
+          e.preventDefault();
+          setLightboxImageIndex((prev) => (prev + 1) % displayImages.length);
+          setZoomLevel(1);
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          setLightboxImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
+          setZoomLevel(1);
+          break;
+        case 'Escape':
+          setIsLightboxOpen(false);
+          setZoomLevel(1);
+          break;
+        default:
+          break;
+      }
+    };
+
+    if (isLightboxOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isLightboxOpen, displayImages.length]);
 
   const fetchProduct = async () => {
     try {
@@ -83,6 +158,8 @@ const ProductDetails = () => {
         throw error;
       }
 
+      console.log('Raw product data from DB:', data);
+      
       // Map the data to our expected interface
       const productData: Product = {
         id: data.id,
@@ -99,6 +176,7 @@ const ProductDetails = () => {
         features: (data as any).features || []
       };
 
+      console.log('Mapped product data:', productData);
       setProduct(productData);
     } catch (error) {
       toast({
@@ -293,99 +371,93 @@ const ProductDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Product Images with Thumbnails */}
           <div className="space-y-4">
-            {(() => {
-              // Get images for selected color variant
-              let displayImages: string[] = [];
-              
-              if (product.color_variants && product.color_variants.length > 0) {
-                const selectedVariant = product.color_variants.find(v => v.color === selectedColor);
-                if (selectedVariant && selectedVariant.images.length > 0) {
-                  displayImages = selectedVariant.images.filter(img => img);
-                }
-              }
-              
-              // Fallback to general images if no color variant images
-              if (displayImages.length === 0) {
-                displayImages = [
-                  ...(product.images && product.images.length > 0 ? product.images : []),
-                  ...(product.image_url ? [product.image_url] : [])
-                ].filter((img, index, arr) => img && arr.indexOf(img) === index);
-              }
-
-              return (
-                <>
-                  {/* Main Image Carousel */}
-                  <Card className="overflow-hidden">
-                    <Carousel setApi={setCarouselApi} className="w-full">
-                      <CarouselContent>
-                        {displayImages.map((image, index) => (
-                          <CarouselItem key={index}>
-                            <div className="aspect-square relative">
-                              <img
-                                src={image || "/placeholder.svg"}
-                                alt={`${product.name} - Image ${index + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                              {product.is_featured && index === 0 && (
-                                <Badge className="absolute top-4 left-4 bg-gradient-gold text-primary-gold-foreground z-10">
-                                  <Star className="h-3 w-3 mr-1" />
-                                  Featured
-                                </Badge>
-                              )}
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                      {displayImages.length > 1 && (
-                        <>
-                          <CarouselPrevious className="left-4" />
-                          <CarouselNext className="right-4" />
-                        </>
-                      )}
-                    </Carousel>
-                  </Card>
-
-                  {/* Thumbnail Gallery */}
-                  {displayImages.length > 1 && (
-                    <div className="grid grid-cols-4 gap-3">
-                      {displayImages.map((image, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            setSelectedImageIndex(index);
-                            carouselApi?.scrollTo(index);
-                          }}
-                          className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                            selectedImageIndex === index
-                              ? 'border-primary shadow-lg'
-                              : 'border-border hover:border-primary/50'
-                          }`}
-                        >
+            {/* Main Image Carousel */}
+            <Card className="overflow-hidden bg-slate-50 relative group">
+              <div 
+                className="cursor-zoom-in relative"
+                onClick={() => {
+                  setIsLightboxOpen(true);
+                  setLightboxImageIndex(selectedImageIndex);
+                }}
+              >
+                <Carousel setApi={setCarouselApi} className="w-full">
+                  <CarouselContent>
+                    {displayImages.map((image, index) => (
+                      <CarouselItem key={index}>
+                        <div className="aspect-square relative bg-white">
                           <img
                             src={image || "/placeholder.svg"}
-                            alt={`Thumbnail ${index + 1}`}
-                            className="w-full h-full object-cover"
+                            alt={`${product.name} - Image ${index + 1}`}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           />
-                        </button>
-                      ))}
-                    </div>
+                          {product.is_featured && index === 0 && (
+                            <Badge className="absolute top-4 left-4 bg-gradient-gold text-primary-gold-foreground z-10">
+                              <Star className="h-3 w-3 mr-1" />
+                              Featured
+                            </Badge>
+                          )}
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  {displayImages.length > 0 && (
+                    <>
+                      <CarouselPrevious className="left-4" />
+                      <CarouselNext className="right-4" />
+                    </>
                   )}
-                </>
-              );
-            })()}
+                </Carousel>
+                
+                {displayImages.length > 0 && (
+                  <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                    <ZoomIn className="h-4 w-4" />
+                    Click to zoom
+                  </div>
+                )}
+              </div>
+            </Card>
+
+            {/* Thumbnail Gallery */}
+            {displayImages.length > 0 && (
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 md:gap-3">
+                {displayImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setSelectedImageIndex(index);
+                      carouselApi?.scrollTo(index);
+                    }}
+                    className={`relative aspect-square rounded-lg overflow-hidden border-3 transition-all duration-300 hover:shadow-md transform hover:scale-105 ${
+                      selectedImageIndex === index
+                        ? 'border-primary shadow-lg scale-105'
+                        : 'border-slate-200 hover:border-primary/50'
+                    }`}
+                  >
+                    <img
+                      src={image || "/placeholder.svg"}
+                      alt={`Thumbnail ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Details & Specifications */}
           <div className="space-y-5">
             <div>
-              <h1 className="text-2xl font-bold text-foreground mb-2">
-                {product.name}
-              </h1>
               {product.specifications?.brand && (
                 <Badge variant="secondary" className="capitalize">
                   {product.specifications.brand}
                 </Badge>
               )}
+              <h1 className="text-2xl font-bold text-foreground mb-2">
+                {product.name}
+              </h1>
+              <p className="text-sm text-muted-foreground mb-4">{product.description}</p>
+              
             </div>
 
             <div className="flex items-baseline gap-2">
@@ -491,6 +563,134 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
+
+        {/* Lightbox Modal */}
+        {isLightboxOpen && displayImages.length > 0 && (
+          <div 
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+            onClick={() => {
+              setIsLightboxOpen(false);
+              setZoomLevel(1);
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLightboxOpen(false);
+                setZoomLevel(1);
+              }}
+              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-50"
+            >
+              <X className="h-8 w-8" />
+            </button>
+
+            {/* Main Image Container */}
+            <div 
+              className="relative max-w-4xl max-h-[80vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative w-full h-full flex items-center justify-center overflow-auto">
+                <img
+                  src={displayImages[lightboxImageIndex] || "/placeholder.svg"}
+                  alt={`${product.name} - Full view ${lightboxImageIndex + 1}`}
+                  className="max-w-full max-h-[80vh] object-contain transition-transform duration-200"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                />
+              </div>
+
+              {/* Zoom Controls */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3 bg-black/50 px-4 py-2 rounded-lg">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setZoomLevel(Math.max(1, zoomLevel - 0.2));
+                  }}
+                  className="text-white hover:text-gray-300 transition-colors"
+                  title="Zoom Out (or use scroll)"
+                >
+                  <ZoomOut className="h-5 w-5" />
+                </button>
+                <span className="text-white text-sm min-w-12 text-center">{Math.round(zoomLevel * 100)}%</span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setZoomLevel(Math.min(3, zoomLevel + 0.2));
+                  }}
+                  className="text-white hover:text-gray-300 transition-colors"
+                  title="Zoom In (or use scroll)"
+                >
+                  <ZoomIn className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Navigation Arrows */}
+              {displayImages.length > 0 && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLightboxImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
+                      setZoomLevel(1);
+                    }}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full transition-colors"
+                    title="Previous (or use arrow keys)"
+                  >
+                    <ArrowLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLightboxImageIndex((prev) => (prev + 1) % displayImages.length);
+                      setZoomLevel(1);
+                    }}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full transition-colors"
+                    title="Next (or use arrow keys)"
+                  >
+                    <ArrowLeft className="h-6 w-6 rotate-180" />
+                  </button>
+                </>
+              )}
+
+              {/* Image Counter */}
+              <div className="absolute top-4 left-4 text-white bg-black/50 px-4 py-2 rounded-lg text-sm">
+                {lightboxImageIndex + 1} / {displayImages.length}
+              </div>
+
+              {/* Thumbnail Strip */}
+              <div className="absolute bottom-20 left-0 right-0 flex justify-center gap-2 overflow-x-auto px-4">
+                {displayImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLightboxImageIndex(index);
+                      setZoomLevel(1);
+                    }}
+                    className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${
+                      index === lightboxImageIndex
+                        ? 'border-white shadow-lg'
+                        : 'border-gray-600 opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img
+                      src={image || "/placeholder.svg"}
+                      alt={`Thumbnail ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Keyboard Hints */}
+            <div className="absolute bottom-4 right-4 text-white/60 text-xs space-y-1">
+              <p>Arrow Keys: Navigate</p>
+              <p>Esc: Close</p>
+              <p>Scroll: Zoom</p>
+            </div>
+          </div>
+        )}
       </div>
       
       <Footer />
